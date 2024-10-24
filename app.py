@@ -7,7 +7,7 @@ from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from advies_template import ADVICE_REPORT_TEMPLATE
 from streamlit_mic_recorder import mic_recorder
-from checklist_component import display_checklist
+# from checklist_component import display_checklist
 
 # Load configuration
 with open('config.json', 'r') as config_file:
@@ -26,7 +26,7 @@ def main():
 
     # Audio Recording Section
     st.header("Neem uw adviesnotities op")
-    display_checklist()
+    # display_checklist()
     st.write("Klik op de microfoonknop om de opname te starten. Klik nogmaals om te stoppen.")
     audio_recorded = mic_recorder(start_prompt="Start Opname", stop_prompt="Stop Opname", key="recorder")
 

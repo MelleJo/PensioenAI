@@ -10,3 +10,4 @@ streamlit-lottie
 requests
 streamlit-option-menu
 python-docx
+checklist_component
