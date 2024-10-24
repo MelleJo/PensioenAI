@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from whisper_service import WhisperService
+from services.whisper_service import WhisperService
 from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from docx import Document

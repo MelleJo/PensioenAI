@@ -10,3 +10,6 @@ streamlit-lottie
 requests
 streamlit-option-menu
 python-docx
+react
+streamlit-component-lib
+fpdf
