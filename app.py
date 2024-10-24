@@ -65,20 +65,27 @@ def process_audio(audio_data, whisper_service, gpt_service, report_processor, do
     
     try:
         # Step 1: Transcription
-        status_text.write("🎯 Bezig met transcriberen...")
-        progress_bar.progress(20)
-        transcript = whisper_service.transcribe_audio(audio_data)
-        st.session_state['transcript'] = transcript
+        if 'transcript' not in st.session_state:
+            status_text.write("🎯 Bezig met transcriberen...")
+            progress_bar.progress(20)
+            transcript = whisper_service.transcribe_audio(audio_data)
+            st.session_state['transcript'] = transcript
+        else:
+            transcript = st.session_state['transcript']
         
         # Show transcript in expander
         with st.expander("Transcriptie", expanded=False):
             st.text_area("Volledige transcriptie:", value=transcript, height=200)
         
         # Step 2: Generate Reports
-        status_text.write("📝 Bezig met rapporten genereren...")
-        progress_bar.progress(40)
-        reports = report_processor.process_audio_to_reports(transcript)
-        st.session_state['reports'] = reports
+        if 'reports' not in st.session_state:
+            status_text.write("📝 Bezig met rapporten genereren...")
+            progress_bar.progress(40)
+            reports = report_processor.process_audio_to_reports(transcript)
+            st.session_state['reports'] = reports
+        else:
+            reports = st.session_state['reports']
+        
         progress_bar.progress(60)
         
         # Step 3: Create Documents
