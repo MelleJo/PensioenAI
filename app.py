@@ -8,10 +8,9 @@ from advies_template import ADVICE_REPORT_TEMPLATE
 
 # Main App Functionality
 def main():
-    # Initialize services using a single API key for both Whisper and GPT
-    api_key = st.secrets["api_key"]  # Unified API key for both services
-    whisper_service = WhisperService(api_key)
-    gpt_service = GPTService(api_key)
+    # Initialize services
+    whisper_service = WhisperService(st.secrets["whisper_api_key"])
+    gpt_service = GPTService(st.secrets["openai_api_key"])
     report_service = ReportService(whisper_service, gpt_service)
 
     # Set up the page
@@ -25,9 +24,9 @@ def main():
     audio_inputs = []
 
     # Loop through questions and transcribe answers
-    for question in questions:
+    for idx, question in enumerate(questions):
         st.write(question)
-        audio_input = st.file_uploader(f"Upload antwoord op de vraag '{question}' (audio bestand in .wav format)", type=["wav"], key=question)
+        audio_input = st.file_uploader(f"Upload antwoord op de vraag '{question}' (audio bestand in .wav format)", type=["wav"], key=f"audio_{idx}")
         if audio_input is not None:
             st.write("Bezig met transcriberen...")
             transcript = whisper_service.transcribe_audio(audio_input)
