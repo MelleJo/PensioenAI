@@ -1,0 +1,6 @@
+{
+  "apiKeys": {
+    "exampleService": "your-api-key-here"
+  },
+  "allowedAudioTypes": ["mp3", "m4a", "wav"]
+}

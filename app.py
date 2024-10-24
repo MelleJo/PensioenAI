@@ -1,10 +1,15 @@
 import streamlit as st
+import json
 from whisper_service import WhisperService
 from gpt_service import GPTService
 from report_service import ReportService
 from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from advies_template import ADVICE_REPORT_TEMPLATE
+
+# Load configuration
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
 
 # Main App Functionality
 def main():
@@ -19,7 +24,7 @@ def main():
 
     # User input: Single audio file for the entire process
     st.header("Upload een geluidsbestand voor de gehele rapportage")
-    audio_input = st.file_uploader("Upload een audio bestand (in .wav format)", type=["wav"], key="full_audio")
+    audio_input = st.file_uploader("Upload een audio bestand", type=config["allowedAudioTypes"], key="full_audio")
 
     question_answers = {}
 
