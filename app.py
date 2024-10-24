@@ -14,7 +14,7 @@ def display_questions():
     """Display questions in the exact format provided"""
     
     # Merged Questions
-    st.markdown("### **Vragenlijst voor Rapportage:**")
+    st.markdown("### **Vragenlijst voor rapportage:**")
     
     merged_questions = """
     - **Vraag 1:** Wat is de naam van het bedrijf?
@@ -138,8 +138,8 @@ def process_audio(audio_data, whisper_service, gpt_service, report_processor, do
 def main():
     # Page config
     st.set_page_config(page_title="Pension Report Generator", layout="wide")
-    st.title('Pension Benchmark Report Creator')
-    st.write("Welkom bij de rapportopbouwtool voor de Benchmark Team. Alle input en output is in het Nederlands.")
+    st.title('Pensioen AI')
+    st.write("Testversie 0.0.1")
 
     # Initialize services
     whisper_service = WhisperService(st.secrets["api_key"])
