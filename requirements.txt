@@ -13,3 +13,4 @@ python-docx
 react
 streamlit-component-lib
 fpdf
+requests
