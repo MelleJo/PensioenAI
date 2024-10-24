@@ -1,3 +1,12 @@
 streamlit
-openai
 streamlit-mic-recorder
+langchain
+langchain-community
+openai
+python-dotenv
+pyperclip
+streamlit-extras
+streamlit-lottie
+requests
+streamlit-option-menu
+python-docx
