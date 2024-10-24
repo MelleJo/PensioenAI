@@ -10,8 +10,9 @@ from PIL import Image
 # Main App Functionality
 def main():
     # Initialize services
-    whisper_service = WhisperService(st.secrets["whisper_api_key"])
-    gpt_service = GPTService(st.secrets["openai_api_key"])
+    api_key = st.secrets["api_key"]  # Using the same key for both Whisper and GPT services
+    whisper_service = WhisperService(api_key)
+    gpt_service = GPTService(api_key)
     report_service = ReportService(whisper_service, gpt_service)
 
     # Set up the page
