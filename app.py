@@ -78,6 +78,7 @@ def process_audio(audio_data, whisper_service, gpt_service, report_processor, do
         status_text.write("📝 Bezig met rapporten genereren...")
         progress_bar.progress(40)
         reports = report_processor.process_audio_to_reports(transcript)
+        st.session_state['reports'] = reports
         progress_bar.progress(60)
         
         # Step 3: Create Documents
