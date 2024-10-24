@@ -1,22 +1,48 @@
-import requests
+import streamlit as st
+from openai import OpenAI
+import tempfile
+import os
+import mimetypes
 
 class WhisperService:
     def __init__(self, api_key):
-        self.api_key = api_key
+        self.client = OpenAI(api_key=api_key)
 
-    def transcribe_audio(self, audio_file):
+    def transcribe_audio(self, audio_input):
         """
-        Function to use Whisper API to transcribe audio to text.
+        Function to use OpenAI API to transcribe audio to text.
         """
-        # Determine content type based on file extension
-        content_type = f'audio/{audio_file.name.split(".")[-1]}'
-        
-        headers = {
-            'Authorization': f'Bearer {self.api_key}',
-            'Content-Type': content_type
-        }
-        response = requests.post("https://api.whisper.com/v1/transcribe", headers=headers, data=audio_file.read())
-        if response.status_code == 200:
-            return response.json().get("text", "")
-        else:
-            return "Error transcribing audio."
+        st.subheader("Transcribing Audio")
+        with st.spinner("Transcribing..."):
+            try:
+                # Create a temporary file
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".m4a") as temp_audio_file:
+                    if isinstance(audio_input, bytes):
+                        # If audio_input is bytes (from recorded audio)
+                        temp_audio_file.write(audio_input)
+                    else:
+                        # If audio_input is an UploadedFile object
+                        temp_audio_file.write(audio_input.getvalue())
+                    temp_audio_file.flush()
+
+                    # Debug information
+                    st.write(f"File size: {os.path.getsize(temp_audio_file.name)} bytes")
+                    st.write(f"File type: {mimetypes.guess_type(temp_audio_file.name)[0]}")
+
+                    # Use the temporary file for transcription
+                    with open(temp_audio_file.name, "rb") as audio_file:
+                        response = self.client.audio.transcriptions.create(
+                            model="whisper-1", 
+                            file=audio_file
+                        )
+
+                # Remove the temporary file
+                os.unlink(temp_audio_file.name)
+
+                transcript = response.text
+                st.success("Transcription complete!")
+                st.write(transcript)
+                return transcript
+            except Exception as e:
+                st.error(f"An error occurred during transcription: {str(e)}")
+                return None

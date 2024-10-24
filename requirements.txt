@@ -1,4 +1,4 @@
 streamlit
 openai
-requests
-Pillow
+streamlit-mic-recorder
+checklist-component

@@ -6,6 +6,8 @@ from report_service import ReportService
 from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from advies_template import ADVICE_REPORT_TEMPLATE
+from streamlit_mic_recorder import mic_recorder
+from checklist_component import display_checklist
 
 # Load configuration
 with open('config.json', 'r') as config_file:
@@ -22,9 +24,20 @@ def main():
     st.title('Pension Benchmark Report Creator')
     st.write("Welkom bij de rapportopbouwtool voor de Benchmark Team. Alle input en output is in het Nederlands.")
 
-    # User input: Single audio file for the entire process
-    st.header("Upload een geluidsbestand voor de gehele rapportage")
-    audio_input = st.file_uploader("Upload een audio bestand", type=config["allowedAudioTypes"], key="full_audio")
+    # Audio Recording Section
+    st.header("Neem uw adviesnotities op")
+    display_checklist()
+    st.write("Klik op de microfoonknop om de opname te starten. Klik nogmaals om te stoppen.")
+    audio_recorded = mic_recorder(start_prompt="Start Opname", stop_prompt="Stop Opname", key="recorder")
+
+    if audio_recorded:
+        st.audio(audio_recorded['bytes'])
+        st.success("Audio succesvol opgenomen!")
+        audio_input = audio_recorded['bytes']
+    else:
+        # User input: Single audio file for the entire process
+        st.header("Upload een geluidsbestand voor de gehele rapportage")
+        audio_input = st.file_uploader("Upload een audio bestand", type=config["allowedAudioTypes"], key="full_audio")
 
     question_answers = {}
 
