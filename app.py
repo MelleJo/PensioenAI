@@ -9,8 +9,8 @@ from advies_template import ADVICE_REPORT_TEMPLATE
 # Main App Functionality
 def main():
     # Initialize services
-    whisper_service = WhisperService(st.secrets["whisper_api_key"])
-    gpt_service = GPTService(st.secrets["openai_api_key"])
+    whisper_service = WhisperService(st.secrets["api_key"])
+    gpt_service = GPTService(st.secrets["api_key"])
     report_service = ReportService(whisper_service, gpt_service)
 
     # Set up the page
