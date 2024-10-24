@@ -181,7 +181,7 @@ def main():
                      report_processor, doc_generator)
 
     # Help information
-    with st.expander("Help & Informatie"):
+    with st.expander("Help"):
         st.write("""
         ### Hoe gebruik je deze tool?
         1. Bekijk de vragen die beantwoord moeten worden
