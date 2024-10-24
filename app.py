@@ -151,7 +151,7 @@ def main():
     display_questions()
 
     # Audio Recording Section
-    st.header("Neem uw adviesnotities op")
+    st.header("Input")
     col1, col2 = st.columns(2)
     
     with col1:
