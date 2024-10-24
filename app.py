@@ -3,10 +3,12 @@ import json
 from services.whisper_service import WhisperService
 from services.report_processor import ReportProcessor
 from services.gpt_service import GPTService
+from services.document_generator import DocumentGenerator
 from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from streamlit_mic_recorder import mic_recorder
 from docx import Document
+from io import BytesIO
 
 def main():
     # Page config
@@ -18,6 +20,7 @@ def main():
     whisper_service = WhisperService(st.secrets["api_key"])
     gpt_service = GPTService(st.secrets["api_key"])
     report_processor = ReportProcessor(gpt_service)
+    doc_generator = DocumentGenerator()
 
     # Audio Recording Section
     st.header("Neem uw adviesnotities op")
@@ -78,9 +81,24 @@ def main():
                     with tab1:
                         st.markdown("### Adviesrapport")
                         st.markdown(reports["advice_report"])
+                        
+                        # Create Word document for advice report
+                        advice_doc = doc_generator.create_report(
+                            report_type="advice",
+                            content=reports["advice_report"],
+                            company_name=reports.get("company_name", ""),
+                            date=reports.get("date", ""),
+                            advisor_name=reports.get("advisor_name", "")
+                        )
+                        
+                        # Save to BytesIO for download
+                        docx_buffer = BytesIO()
+                        advice_doc.save(docx_buffer)
+                        docx_buffer.seek(0)
+                        
                         if st.download_button(
-                            "Download Adviesrapport",
-                            reports["advice_report"],
+                            "Download Adviesrapport (Word)",
+                            docx_buffer,
                             file_name="adviesrapport.docx",
                             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         ):
@@ -89,9 +107,24 @@ def main():
                     with tab2:
                         st.markdown("### Analyserapport")
                         st.markdown(reports["analysis_report"])
+                        
+                        # Create Word document for analysis report
+                        analysis_doc = doc_generator.create_report(
+                            report_type="analysis",
+                            content=reports["analysis_report"],
+                            company_name=reports.get("company_name", ""),
+                            date=reports.get("date", ""),
+                            advisor_name=reports.get("advisor_name", "")
+                        )
+                        
+                        # Save to BytesIO for download
+                        docx_buffer = BytesIO()
+                        analysis_doc.save(docx_buffer)
+                        docx_buffer.seek(0)
+                        
                         if st.download_button(
-                            "Download Analyserapport",
-                            reports["analysis_report"],
+                            "Download Analyserapport (Word)",
+                            docx_buffer,
                             file_name="analyserapport.docx",
                             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         ):
@@ -110,7 +143,7 @@ def main():
         2. Klik op 'Transcribeer Audio' om de tekst te genereren
         3. Controleer de transcriptie
         4. Klik op 'Genereer Rapporten' om beide rapporttypes te maken
-        5. Download de gewenste rapporten
+        5. Download de gewenste rapporten als Word-document
         """)
 
 if __name__ == "__main__":
