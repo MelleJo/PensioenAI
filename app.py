@@ -13,10 +13,10 @@ from io import BytesIO
 def display_questions():
     """Display questions in the exact format provided"""
     
-    # Adviesrapport Questions
-    st.markdown("### **1. Vragenlijst voor Adviesrapportage:**")
+    # Merged Questions
+    st.markdown("### **Vragenlijst voor Rapportage:**")
     
-    advies_questions = """
+    merged_questions = """
     - **Vraag 1:** Wat is de naam van het bedrijf?
     
     - **Vraag 2:** Wat is de datum van de opmaak van de adviesrapportage?
@@ -38,25 +38,13 @@ def display_questions():
     - **Vraag 10:** Wat is de naam van de nieuwe pensioenuitvoerder en waarom?
     
     - **Vraag 11:** Wil de werkgever wel of geen deelnemerscommunicatie? Of doet de werkgever dit zelf? Of in nader overleg?
+    
+    - **Vraag 12:** Welke verplichtstellingen zijn er onderzocht? En wat zijn de uitkomsten van dit onderzoek?
+    
+    - **Vraag 13:** Wat is de uitkomst van het financiële onderzoek? Is dat een minder of een meer dan gemiddeld risico? En wanneer er een meer dan gemiddeld risico is, waarop is dat dan gebaseerd?
     """
     
-    # Analyserapport Questions
-    st.markdown(advies_questions)
-    st.markdown("### **2. Vragenlijst voor Analyserapportage:**")
-    
-    analyse_questions = """
-    - **Vraag 1:** Wat is de naam van het bedrijf?
-    
-    - **Vraag 2:** Wat is de datum van de opmaak van de adviesrapportage?
-    
-    - **Vraag 3:** Wat is de naam van de adviseur?
-    
-    - **Vraag 4:** Welke verplichtstellingen zijn er onderzocht? En wat zijn de uitkomsten van dit onderzoek?
-    
-    - **Vraag 5:** Wat is de uitkomst van het financiële onderzoek? Is dat een minder of een meer dan gemiddeld risico? En wanneer er een meer dan gemiddeld risico is, waarop is dat dan gebaseerd?
-    """
-    
-    st.markdown(analyse_questions)
+    st.markdown(merged_questions)
 
 def process_audio(audio_data, whisper_service, gpt_service, report_processor, doc_generator):
     """Process audio data through the complete pipeline"""
