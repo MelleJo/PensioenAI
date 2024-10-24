@@ -5,23 +5,17 @@ from report_service import ReportService
 from questions_adviesrapport import ADVIESRAPPORT_QUESTIONS
 from questions_analyserapport import ANALYSERAPPORT_QUESTIONS
 from advies_template import ADVICE_REPORT_TEMPLATE
-from PIL import Image
 
 # Main App Functionality
 def main():
     # Initialize services
-    api_key = st.secrets["api_key"]  # Using the same key for both Whisper and GPT services
-    whisper_service = WhisperService(api_key)
-    gpt_service = GPTService(api_key)
+    whisper_service = WhisperService(st.secrets["whisper_api_key"])
+    gpt_service = GPTService(st.secrets["openai_api_key"])
     report_service = ReportService(whisper_service, gpt_service)
 
     # Set up the page
     st.title('Pension Benchmark Report Creator')
     st.write("Welkom bij de rapportopbouwtool voor de Benchmark Team. Alle input en output is in het Nederlands.")
-
-    # Image placeholder
-    image = Image.open("example_image.jpg")  # Placeholder image. You can replace this with the required image
-    st.image(image, caption='Benchmark Image Placeholder', use_column_width=True)
 
     # User inputs
     st.header("Vragen voor de pensioen maniwaker")
@@ -61,8 +55,6 @@ def main():
     # Placeholder for structured report format
     st.header("Structuur van het rapport")
     st.write("Naam: [Naam hier]")
-    st.write("Afbeelding: ")
-    st.image(image, use_column_width=True)
     st.write("Rapporttekst: [Hier komt de tekst gegenereerd door AI]")
 
 if __name__ == "__main__":
