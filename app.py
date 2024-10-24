@@ -157,8 +157,8 @@ def main():
     with col1:
         st.write("Optie 1: Neem direct op")
         audio_recorded = mic_recorder(
-            start_prompt="Start Opname",
-            stop_prompt="Stop Opname",
+            start_prompt="Start opname",
+            stop_prompt="Stop opname",
             key="recorder"
         )
         
