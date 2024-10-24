@@ -17,26 +17,30 @@ def main():
     st.title('Pension Benchmark Report Creator')
     st.write("Welkom bij de rapportopbouwtool voor de Benchmark Team. Alle input en output is in het Nederlands.")
 
-    # User inputs
-    st.header("Vragen voor de pensioen maniwaker")
-    questions = ADVIESRAPPORT_QUESTIONS + ANALYSERAPPORT_QUESTIONS
-    question_answers = {}
-    audio_inputs = []
+    # User input: Single audio file for the entire process
+    st.header("Upload een geluidsbestand voor de gehele rapportage")
+    audio_input = st.file_uploader("Upload een audio bestand (in .wav format)", type=["wav"], key="full_audio")
 
-    # Loop through questions and transcribe answers
-    for idx, question in enumerate(questions):
-        st.write(question)
-        audio_input = st.file_uploader(f"Upload antwoord op de vraag '{question}' (audio bestand in .wav format)", type=["wav"], key=f"audio_{idx}")
-        if audio_input is not None:
-            st.write("Bezig met transcriberen...")
-            transcript = whisper_service.transcribe_audio(audio_input)
-            st.write("Transcript: " + transcript)
-            question_answers[question] = transcript
-            audio_inputs.append(audio_input)
+    question_answers = {}
+
+    if audio_input is not None:
+        st.write("Bezig met transcriberen...")
+        transcript = whisper_service.transcribe_audio(audio_input)
+        st.write("Transcript voltooid!")
+        st.text_area("Volledige transcriptie:", value=transcript, height=300)
+
+        # Splitting transcript into sections for each question
+        # Assuming each section is preceded by a known question or indicator (simplified splitting for demonstration purposes)
+        transcript_sections = transcript.split("\n")  # Assuming each answer is on a new line
+        for idx, question in enumerate(ADVIESRAPPORT_QUESTIONS + ANALYSERAPPORT_QUESTIONS):
+            if idx < len(transcript_sections):
+                question_answers[question] = transcript_sections[idx]
+            else:
+                question_answers[question] = ""
 
     # Report Generation
     if st.button("Genereer rapport"):
-        if len(question_answers) == len(questions):
+        if question_answers:
             with st.spinner('Bezig met rapport genereren...'):
                 # Generate report by filling in the template
                 report_text = ADVICE_REPORT_TEMPLATE.format(
@@ -50,7 +54,7 @@ def main():
                 st.subheader("Gegenereerde rapporttekst")
                 st.write(report_text)
         else:
-            st.warning("Gelieve een antwoord op elke vraag te uploaden.")
+            st.warning("Gelieve een audio bestand te uploaden en ervoor te zorgen dat alle vragen beantwoord zijn.")
 
     # Placeholder for structured report format
     st.header("Structuur van het rapport")
