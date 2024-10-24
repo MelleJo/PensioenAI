@@ -183,7 +183,7 @@ def main():
     # Help information
     with st.expander("Help & Informatie"):
         st.write("""
-        ### Hoe gebruikt u deze tool:
+        ### Hoe gebruik je deze tool?
         1. Bekijk de vragen die beantwoord moeten worden
         2. Neem audio op of upload een audiobestand
         3. Wacht tot de verwerking voltooid is
