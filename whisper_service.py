@@ -1,0 +1,19 @@
+import requests
+
+class WhisperService:
+    def __init__(self, api_key):
+        self.api_key = api_key
+
+    def transcribe_audio(self, audio_file):
+        """
+        Function to use Whisper API to transcribe audio to text.
+        """
+        headers = {
+            'Authorization': f'Bearer {self.api_key}',
+            'Content-Type': 'audio/wav'
+        }
+        response = requests.post("https://api.whisper.com/v1/transcribe", headers=headers, data=audio_file.read())
+        if response.status_code == 200:
+            return response.json().get("text", "")
+        else:
+            return "Error transcribing audio."
